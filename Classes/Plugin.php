@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Jokumer\Eepcollect;
 
 use TYPO3\CMS\Core\Database\Connection;
@@ -35,6 +37,7 @@ class Plugin extends AbstractPlugin
         'pid' => '',
         'prozess' => '',
     ];
+
     // private vars
     public $hash_length = 6; // The ident-hash is normally 32 characters and should be! But if you are making sites for WAP-devices og other lowbandwidth stuff, you may shorten the length. Never let this value drop below 6. A length of 6 would give you more than 16 mio possibilities.
     public $sessionTable = 'tx_eepcollect_sessions'; // table containing user-sessions
@@ -1207,10 +1210,11 @@ class Plugin extends AbstractPlugin
      * When calling from own extension, use  syntax getHtmlTemplate('EXT:extkey/template.html')
      *
      * @param string $filename tmpl name, usually in the typo3/template/ directory
+     *
      * @return string HTML of template
      */
-    protected function getHtmlTemplate($filename)
-    {
+    protected function getHtmlTemplate(string $filename): string
+	{
         if (GeneralUtility::isFirstPartOfStr($filename, 'EXT:')) {
             $filename = GeneralUtility::getFileAbsFileName($filename);
         } elseif (!GeneralUtility::isAbsPath($filename)) {
@@ -1218,10 +1222,13 @@ class Plugin extends AbstractPlugin
         } elseif (!GeneralUtility::isAllowedAbsPath($filename)) {
             $filename = '';
         }
+
         $htmlTemplate = '';
+
         if ($filename !== '') {
             $htmlTemplate = file_get_contents($filename);
         }
+
         return $htmlTemplate;
     }
 
@@ -1232,19 +1239,21 @@ class Plugin extends AbstractPlugin
      * @param array $rl A rootline array!
      * @param int $len The max length of each title from the rootline.
      * @return string The path in the form "/page title/This is another pageti.../Another page
-     * @author TYPO3 8.7
      */
-    protected function getPathFromRootline($rl, $len = 20)
-    {
+    protected function getPathFromRootline(array $rl, int $len = 20): string
+	{
         $path = '';
+
         if (is_array($rl)) {
             $c = count($rl);
+
             for ($a = 0; $a < $c; $a++) {
                 if ($rl[$a]['uid']) {
                     $path .= '/' . GeneralUtility::fixed_lgd_cs(strip_tags($rl[$a]['title']), $len);
                 }
             }
         }
+
         return $path;
     }
 }
