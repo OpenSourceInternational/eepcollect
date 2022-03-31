@@ -23,6 +23,11 @@
       "Jokumer\\Eepcollect\\": "Classes/"
     }
   },
+  "extra": {
+    "typo3/cms": {
+      "extension-key": "eepcollect"
+    }
+  },
   "replace": {
     "eepcollect": "self.version",
     "typo3-ter/eepcollect": "self.version"
